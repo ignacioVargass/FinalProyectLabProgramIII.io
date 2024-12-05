@@ -9,7 +9,7 @@ const menuItems = [
   { name: "Ejercicio 7", link: "ejercicios/ejercicio 7/index.html" },
   { name: "Ejercicio 9", link: "ejercicios/ejercicio 9/ValidarCedula/index.html" },
  
-  // Agrega más enlaces según tus ejercicios
+  // Agrega más enlaces 
 ];
 
 const menu = document.getElementById("dynamicMenu");
