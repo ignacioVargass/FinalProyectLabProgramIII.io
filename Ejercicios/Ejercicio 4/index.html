@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Dinámico</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link al archivo de estilos externos -->
+</head>
+<body>
+
+  <div id="menu"></div>
+  
+  <!-- Formulario para agregar opciones al menú -->
+  <h2>Agregar nueva opción al menú</h2>
+  <form id="menuForm">
+    <input type="text" id="nombre" placeholder="Nombre del Menú" required>
+    <input type="url" id="enlace" placeholder="Enlace" required>
+    <button type="submit">Agregar Opción</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    let menuData = [];
+
+    // Función para renderizar el menú dinámicamente
+    function renderMenu() {
+      $('#menu').empty(); // Limpiar el contenido del menú
+      menuData.forEach(function(item) {
+        const menuItem = `<a href="${item.enlace}" class="menu-item">${item.nombre}</a>`;
+        $('#menu').append(menuItem);
+      });
+    }
+
+    // Cargar el menú al iniciar la página
+    $(document).ready(function() {
+      // Cargar la estructura de datos JSON
+      $.getJSON('menu.json', function(data) {
+        menuData = data.menu; // Guardamos los datos del menú
+        renderMenu(); // Renderizamos el menú con los datos cargados
+      });
+
+      // Formulario para agregar una nueva opción
+      $('#menuForm').submit(function(event) {
+        event.preventDefault();
+        
+        // Validar los datos del formulario
+        const nombre = $('#nombre').val();
+        const enlace = $('#enlace').val();
+
+        // Verificar que el nombre y el enlace no estén vacíos y que el enlace sea válido
+        if (nombre.trim() === '' || !isValidUrl(enlace)) {
+          alert('Por favor, ingresa un nombre y un enlace válido.');
+          return;
+        }
+
+        const nuevoMenu = {
+          "id": Date.now(), // Generar un ID único basado en la fecha actual
+          "nombre": nombre,
+          "enlace": enlace
+        };
+
+        // Agregar el nuevo elemento al menú
+        menuData.push(nuevoMenu);
+
+        // Simulación de guardado (aquí solo lo mostramos en consola)
+        console.log('Nuevo menú actualizado:', menuData);
+
+        // Actualizar el menú dinámicamente
+        renderMenu();
+
+        // Limpiar el formulario
+        $('#nombre').val('');
+        $('#enlace').val('');
+      });
+    });
+
+    // Función para validar que el enlace proporcionado sea una URL válida
+    function isValidUrl(url) {
+      const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocolo
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // dominio
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // o dirección IP (v4)
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // puerto y ruta
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // cadena de consulta
+        '(\\#[-a-z\\d_]*)?$','i'); // fragmento de anclaje
+      return !!pattern.test(url);
+    }
+  </script>
+</body>
+</html>
