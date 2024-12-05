@@ -8,3 +8,4 @@ Este proyecto reúne todos los ejercicios realizados durante el curso, accesible
 - Enlaces organizados por ejercicios.
 
 ## Estructura del Proyecto
+Proyecto-Final/ │ ├── index.html ├── styles.css ├── script.js ├── README.md ├── ejercicios/ │ ├── ejercicio1/ │ │ ├── index.html │ │ └── styles.css │ └── ejercicio2/ │ ├── index.html │ └── styles.css └── assets/
